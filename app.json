@@ -1,27 +1,23 @@
 {
   "expo": {
-    "name": "climatealertapp",
-    "slug": "climatealertapp",
+    "name": "ClimateAlertApp",
+    "slug": "ClimateAlertApp",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "platforms": ["ios", "android", "web"],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourdomain.ClimateAlertApp",
+      "infoPlist": {
+        "UIBackgroundModes": ["fetch", "remote-notification"]
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "package": "com.yourdomain.ClimateAlertApp",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "ACCESS_FINE_LOCATION"
+      ]
     }
   }
 }

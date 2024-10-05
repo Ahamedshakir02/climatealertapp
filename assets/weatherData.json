@@ -1,0 +1,74 @@
+{
+    "city": {
+      "name": "London",
+      "coordinates": {
+        "lat": 51.5074,
+        "lon": -0.1278
+      },
+      "country": "GB"
+    },
+    "weather": [
+      {
+        "date": "2024-10-05",
+        "condition": "Thunderstorm",
+        "temperature": {
+          "min": 12.34,
+          "max": 18.56,
+          "current": 16.78,
+          "unit": "Celsius"
+        },
+        "alerts": {
+          "title": "Severe Thunderstorm Warning",
+          "description": "A severe thunderstorm is expected in the London area. Take precautions immediately. Lightning and heavy rainfall expected.",
+          "advice": "Stay indoors, avoid open spaces, and unplug electronic devices."
+        }
+      },
+      {
+        "date": "2024-10-06",
+        "condition": "Clear",
+        "temperature": {
+          "min": 10.23,
+          "max": 17.89,
+          "current": 15.32,
+          "unit": "Celsius"
+        },
+        "alerts": null
+      },
+      {
+        "date": "2024-10-07",
+        "condition": "Heavy Rain",
+        "temperature": {
+          "min": 11.76,
+          "max": 19.11,
+          "current": 14.52,
+          "unit": "Celsius"
+        },
+        "alerts": {
+          "title": "Flood Warning",
+          "description": "Heavy rain is expected to cause flooding in low-lying areas. Be prepared for road closures and possible evacuations.",
+          "advice": "Avoid driving through flooded roads, stay updated with local alerts, and move to higher ground if necessary."
+        }
+      }
+    ],
+    "disasterPreparedness": [
+      {
+        "type": "Flood",
+        "preparationSteps": [
+          "Move valuables to higher ground.",
+          "Have an emergency kit ready.",
+          "Stay tuned to local news and alerts.",
+          "Evacuate if instructed by authorities."
+        ]
+      },
+      {
+        "type": "Thunderstorm",
+        "preparationSteps": [
+          "Stay indoors during the storm.",
+          "Avoid using electrical appliances.",
+          "Unplug electronic devices to prevent damage.",
+          "Stay away from windows."
+        ]
+      }
+    ]
+  }
+  

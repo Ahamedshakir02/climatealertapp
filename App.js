@@ -1,54 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+import weatherData from './assets/weatherData.json'; // Import JSON file
 
 export default function App() {
-  const [weatherData, setWeatherData] = useState(null);
-  const [selectedAlert, setSelectedAlert] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  const notificationListener = React.useRef();
+  const responseListener = React.useRef();
 
-  // Load the weatherData.json file
+  // Request permission and set up notifications
   useEffect(() => {
-    const loadWeatherData = async () => {
-      try {
-        const weatherFile = Asset.fromModule(require('./assets/weatherData.json')).uri;
-        const data = await FileSystem.readAsStringAsync(weatherFile);
-        const parsedData = JSON.parse(data);
-        setWeatherData(parsedData);
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-        // Check for alerts and send notification
-        parsedData.weather.forEach(day => {
-          if (day.alerts) {
-            sendPushNotification(day.alerts.title, day.alerts.description);
-          }
-        });
-
-      } catch (error) {
-        console.error('Error loading weather data:', error);
-      }
-    };
-
-    loadWeatherData();
-    registerForPushNotificationsAsync();
-
+    // When a notification is received
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
 
+    // When a user interacts with the notification (i.e. tap)
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       console.log(response);
     });
@@ -59,139 +32,179 @@ export default function App() {
     };
   }, []);
 
-  // Push Notification Registration
+  // Function to send a push notification
+  const sendNotification = async (alert) => {
+    if (alert) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: alert.title,
+          body: alert.description,
+        },
+        trigger: null, // Immediate notification
+      });
+    }
+  };
+
+  // Register device for push notifications
   async function registerForPushNotificationsAsync() {
     let token;
-
-    // Check if the device supports push notifications
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
-
-      // If permission is not granted, ask for permission
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         finalStatus = status;
       }
-
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+        alert('Failed to get push token for push notifications!');
         return;
       }
-
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      setExpoPushToken(token);
+      console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return token;
   }
 
-  // Send Notification Function
-  async function sendPushNotification(title, body) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: title,
-        body: body,
-        sound: true,
-      },
-      trigger: { seconds: 1 },
-    });
-  }
+  // Render location list
+  const renderLocationItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.locationItem}
+      onPress={() => {
+        setSelectedLocation(item);
+        sendNotification(item.alerts);
+      }}
+    >
+      <Text style={styles.locationText}>{item.location}</Text>
+      {item.alerts && <Text style={styles.alertText}>⚠️ Alert: {item.alerts.title}</Text>}
+    </TouchableOpacity>
+  );
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {weatherData ? (
-        <>
-          <Text style={styles.title}>Weather for {weatherData.city.name}</Text>
+  // Detailed view of selected location
+  const renderLocationDetails = (location) => (
+    <ScrollView contentContainerStyle={styles.detailsContainer}>
+      <Text style={styles.locationTitle}>{location.location}</Text>
+      <Text style={styles.weatherCondition}>{location.condition}</Text>
+      <Text style={styles.temperature}>Current: {location.temperature.current}°C</Text>
+      <Text style={styles.temperature}>High: {location.temperature.high}°C, Low: {location.temperature.low}°C</Text>
 
-          {weatherData.weather.map((day, index) => (
-            <View key={index} style={styles.weatherBlock}>
-              <Text style={styles.date}>{day.date}</Text>
-              <Text style={styles.text}>Condition: {day.condition}</Text>
-              <Text style={styles.text}>Temperature: {day.temperature.current}°C</Text>
-
-              {day.alerts && (
-                <TouchableOpacity
-                  style={styles.alertButton}
-                  onPress={() => setSelectedAlert(day.alerts)}
-                >
-                  <Text style={styles.alertButtonText}>View Alert</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          ))}
-
-          {selectedAlert && (
-            <View style={styles.alertBlock}>
-              <Text style={styles.alertTitle}>{selectedAlert.title}</Text>
-              <Text style={styles.alertDesc}>{selectedAlert.description}</Text>
-              <Text style={styles.advice}>Advice: {selectedAlert.advice}</Text>
-            </View>
-          )}
-        </>
-      ) : (
-        <Text>Loading weather data...</Text>
+      {location.alerts && (
+        <View style={styles.alertContainer}>
+          <Text style={styles.alertTitle}>{location.alerts.title}</Text>
+          <Text style={styles.alertDescription}>{location.alerts.description}</Text>
+          <Text style={styles.advice}>Advice: {location.alerts.advice}</Text>
+        </View>
       )}
     </ScrollView>
   );
+
+  return (
+    <View style={styles.container}>
+      {selectedLocation ? (
+        <View style={styles.detailsView}>
+          <TouchableOpacity onPress={() => setSelectedLocation(null)} style={styles.backButton}>
+            <Text style={styles.backButtonText}>← Back</Text>
+          </TouchableOpacity>
+          {renderLocationDetails(selectedLocation)}
+        </View>
+      ) : (
+        <FlatList
+          data={weatherData.weather}
+          keyExtractor={(item) => item.location}
+          renderItem={renderLocationItem}
+          contentContainerStyle={styles.list}
+        />
+      )}
+    </View>
+  );
 }
 
+// Styling for the app
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 20,
+    paddingTop: 50,
   },
-  title: {
+  list: {
+    paddingBottom: 20,
+  },
+  locationItem: {
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  locationText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  alertText: {
+    marginTop: 5,
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  detailsView: {
+    flex: 1,
+  },
+  backButton: {
+    marginBottom: 20,
+  },
+  backButtonText: {
+    color: '#007BFF',
+    fontSize: 18,
+  },
+  detailsContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  locationTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  weatherBlock: {
-    marginVertical: 10,
-    padding: 15,
-    backgroundColor: '#e0f7fa',
-    borderRadius: 10,
-    width: '100%',
+  weatherCondition: {
+    fontSize: 20,
+    marginBottom: 10,
   },
-  date: {
+  temperature: {
     fontSize: 18,
-    fontWeight: 'bold',
+    marginBottom: 5,
   },
-  text: {
-    fontSize: 16,
-  },
-  alertButton: {
-    marginTop: 10,
-    backgroundColor: '#f44336',
-    padding: 10,
-    borderRadius: 5,
-  },
-  alertButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  alertBlock: {
+  alertContainer: {
     marginTop: 20,
+    backgroundColor: '#ffebee',
     padding: 15,
-    backgroundColor: '#ffccbc',
     borderRadius: 10,
-    width: '100%',
   },
   alertTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#d32f2f',
+    color: 'red',
   },
-  alertDesc: {
-    fontSize: 14,
-    marginBottom: 5,
+  alertDescription: {
+    marginTop: 5,
+    fontSize: 16,
   },
   advice: {
-    fontSize: 14,
+    marginTop: 10,
     fontStyle: 'italic',
   },
 });

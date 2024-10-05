@@ -1,74 +1,282 @@
 {
-    "city": {
-      "name": "London",
-      "coordinates": {
-        "lat": 51.5074,
-        "lon": -0.1278
+  "city": {
+    "name": "Global Weather Alerts"
+  },
+  "weather": [
+    {
+      "location": "New York",
+      "date": "2024-10-05",
+      "condition": "Cloudy",
+      "temperature": {
+        "current": 18,
+        "high": 22,
+        "low": 14
       },
-      "country": "GB"
+      "alerts": {
+        "title": "Flood Warning",
+        "description": "Heavy rainfall expected with potential flooding in low-lying areas.",
+        "advice": "Move to higher ground and avoid driving through flooded roads."
+      }
     },
-    "weather": [
-      {
-        "date": "2024-10-05",
-        "condition": "Thunderstorm",
-        "temperature": {
-          "min": 12.34,
-          "max": 18.56,
-          "current": 16.78,
-          "unit": "Celsius"
-        },
-        "alerts": {
-          "title": "Severe Thunderstorm Warning",
-          "description": "A severe thunderstorm is expected in the London area. Take precautions immediately. Lightning and heavy rainfall expected.",
-          "advice": "Stay indoors, avoid open spaces, and unplug electronic devices."
-        }
-      },
-      {
-        "date": "2024-10-06",
-        "condition": "Clear",
-        "temperature": {
-          "min": 10.23,
-          "max": 17.89,
-          "current": 15.32,
-          "unit": "Celsius"
-        },
-        "alerts": null
-      },
-      {
-        "date": "2024-10-07",
-        "condition": "Heavy Rain",
-        "temperature": {
-          "min": 11.76,
-          "max": 19.11,
-          "current": 14.52,
-          "unit": "Celsius"
-        },
-        "alerts": {
-          "title": "Flood Warning",
-          "description": "Heavy rain is expected to cause flooding in low-lying areas. Be prepared for road closures and possible evacuations.",
-          "advice": "Avoid driving through flooded roads, stay updated with local alerts, and move to higher ground if necessary."
-        }
+    {
+      "location": "Los Angeles",
+      "date": "2024-10-05",
+      "condition": "Sunny",
+      "temperature": {
+        "current": 28,
+        "high": 30,
+        "low": 18
       }
-    ],
-    "disasterPreparedness": [
-      {
-        "type": "Flood",
-        "preparationSteps": [
-          "Move valuables to higher ground.",
-          "Have an emergency kit ready.",
-          "Stay tuned to local news and alerts.",
-          "Evacuate if instructed by authorities."
-        ]
+    },
+    {
+      "location": "London",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 12,
+        "high": 15,
+        "low": 9
       },
-      {
-        "type": "Thunderstorm",
-        "preparationSteps": [
-          "Stay indoors during the storm.",
-          "Avoid using electrical appliances.",
-          "Unplug electronic devices to prevent damage.",
-          "Stay away from windows."
-        ]
+      "alerts": {
+        "title": "Severe Weather Alert",
+        "description": "Strong winds and heavy rain expected throughout the day.",
+        "advice": "Avoid unnecessary travel and secure outdoor objects."
       }
-    ]
-  }
-  
+    },
+    {
+      "location": "Paris",
+      "date": "2024-10-05",
+      "condition": "Partly Cloudy",
+      "temperature": {
+        "current": 19,
+        "high": 21,
+        "low": 13
+      }
+    },
+    {
+      "location": "Tokyo",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 16,
+        "high": 19,
+        "low": 14
+      },
+      "alerts": {
+        "title": "Typhoon Alert",
+        "description": "Typhoon approaching with strong winds and heavy rainfall expected.",
+        "advice": "Stay indoors and stock up on essential supplies."
+      }
+    },
+    {
+      "location": "Sydney",
+      "date": "2024-10-05",
+      "condition": "Sunny",
+      "temperature": {
+        "current": 25,
+        "high": 28,
+        "low": 20
+      }
+    },
+    {
+      "location": "Rio de Janeiro",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 22,
+        "high": 26,
+        "low": 19
+      },
+      "alerts": {
+        "title": "Landslide Warning",
+        "description": "Continuous rain has increased the risk of landslides in hilly areas.",
+        "advice": "Evacuate if you are in a high-risk zone."
+      }
+    },
+    {
+      "location": "Cape Town",
+      "date": "2024-10-05",
+      "condition": "Windy",
+      "temperature": {
+        "current": 20,
+        "high": 23,
+        "low": 17
+      },
+      "alerts": {
+        "title": "Wind Advisory",
+        "description": "Strong winds are expected in coastal regions, posing risks for small boats.",
+        "advice": "Avoid going out on small watercrafts."
+      }
+    },
+    {
+      "location": "Berlin",
+      "date": "2024-10-05",
+      "condition": "Cloudy",
+      "temperature": {
+        "current": 14,
+        "high": 18,
+        "low": 12
+      }
+    },
+    {
+      "location": "Dubai",
+      "date": "2024-10-05",
+      "condition": "Sunny",
+      "temperature": {
+        "current": 35,
+        "high": 38,
+        "low": 28
+      },
+      "alerts": {
+        "title": "Heat Advisory",
+        "description": "Extreme heat expected, with temperatures reaching up to 40°C.",
+        "advice": "Stay indoors, stay hydrated, and avoid outdoor activities."
+      }
+    },
+    {
+      "location": "Mumbai",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 26,
+        "high": 30,
+        "low": 23
+      },
+      "alerts": {
+        "title": "Monsoon Flood Alert",
+        "description": "Heavy rainfall due to monsoon could cause flash floods in low-lying areas.",
+        "advice": "Avoid traveling through waterlogged areas."
+      }
+    },
+    {
+      "location": "Moscow",
+      "date": "2024-10-05",
+      "condition": "Snowy",
+      "temperature": {
+        "current": -5,
+        "high": -2,
+        "low": -8
+      },
+      "alerts": {
+        "title": "Blizzard Warning",
+        "description": "Heavy snowfall and strong winds expected. Visibility will be significantly reduced.",
+        "advice": "Stay indoors and avoid all travel unless necessary."
+      }
+    },
+    {
+      "location": "Toronto",
+      "date": "2024-10-05",
+      "condition": "Cloudy",
+      "temperature": {
+        "current": 10,
+        "high": 14,
+        "low": 6
+      }
+    },
+    {
+      "location": "Mexico City",
+      "date": "2024-10-05",
+      "condition": "Sunny",
+      "temperature": {
+        "current": 24,
+        "high": 26,
+        "low": 18
+      }
+    },
+    {
+      "location": "Beijing",
+      "date": "2024-10-05",
+      "condition": "Hazy",
+      "temperature": {
+        "current": 15,
+        "high": 18,
+        "low": 12
+      },
+      "alerts": {
+        "title": "Air Quality Alert",
+        "description": "High levels of pollution detected, air quality is unhealthy for sensitive groups.",
+        "advice": "Wear masks outdoors and limit physical exertion."
+      }
+    },
+    {
+      "location": "Seoul",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 17,
+        "high": 20,
+        "low": 14
+      },
+      "alerts": {
+        "title": "Flash Flood Warning",
+        "description": "Heavy rainfall in the area is expected to cause flash floods.",
+        "advice": "Move to higher ground and avoid traveling through flooded roads."
+      }
+    },
+    {
+      "location": "Cairo",
+      "date": "2024-10-05",
+      "condition": "Sunny",
+      "temperature": {
+        "current": 31,
+        "high": 35,
+        "low": 26
+      }
+    },
+    {
+      "location": "Bangkok",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 29,
+        "high": 33,
+        "low": 25
+      },
+      "alerts": {
+        "title": "Tropical Storm Warning",
+        "description": "A tropical storm is approaching the region with heavy rain and strong winds.",
+        "advice": "Prepare for potential flooding and stay indoors."
+      }
+    },
+    {
+      "location": "Johannesburg",
+      "date": "2024-10-05",
+      "condition": "Cloudy",
+      "temperature": {
+        "current": 18,
+        "high": 22,
+        "low": 16
+      }
+    },
+    {
+      "location": "Jakarta",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 27,
+        "high": 31,
+        "low": 24
+      },
+      "alerts": {
+        "title": "Flood Alert",
+        "description": "Heavy rainfall expected in urban areas, with risks of flash flooding.",
+        "advice": "Prepare for potential flooding and avoid traveling through affected areas."
+      }
+    },
+    {
+      "location": "Hong Kong",
+      "date": "2024-10-05",
+      "condition": "Rainy",
+      "temperature": {
+        "current": 24,
+        "high": 28,
+        "low": 22
+      },
+      "alerts": {
+        "title": "Typhoon Signal No. 8",
+        "description": "A strong typhoon is expected to make landfall, bringing heavy rain and strong winds.",
+        "advice": "Stay indoors and avoid all outdoor activities."
+      }
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView, Platform, ImageBackground } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import weatherData from './assets/weatherData.json'; // Import JSON file
+import weatherData from './assets/weatherData.json';
+
+const backgroundImg = require('./assets/background.jpeg'); 
 
 export default function App() {
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -110,31 +112,39 @@ export default function App() {
   );
 
   return (
-    <View style={styles.container}>
-      {selectedLocation ? (
-        <View style={styles.detailsView}>
-          <TouchableOpacity onPress={() => setSelectedLocation(null)} style={styles.backButton}>
-            <Text style={styles.backButtonText}>← Back</Text>
-          </TouchableOpacity>
-          {renderLocationDetails(selectedLocation)}
-        </View>
-      ) : (
-        <FlatList
-          data={weatherData.weather}
-          keyExtractor={(item) => item.location}
-          renderItem={renderLocationItem}
-          contentContainerStyle={styles.list}
-        />
-      )}
-    </View>
+    <ImageBackground source={backgroundImg} style={styles.background}>
+      <View style={styles.container}>
+      <Text style={styles.heading}>Climate Alert</Text>
+        {selectedLocation ? (
+          <View style={styles.detailsView}>
+            <TouchableOpacity onPress={() => setSelectedLocation(null)} style={styles.backButton}>
+              <Text style={styles.backButtonText}>← Back</Text>
+            </TouchableOpacity>
+            {renderLocationDetails(selectedLocation)}
+          </View>
+        ) : (
+          <FlatList
+            data={weatherData.weather}
+            keyExtractor={(item) => item.location}
+            renderItem={renderLocationItem}
+            contentContainerStyle={styles.list}
+          />
+        )}
+      </View>
+    </ImageBackground>
   );
 }
 
 // Styling for the app
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Slightly darkened background to improve text readability
     paddingHorizontal: 20,
     paddingTop: 50,
   },
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   locationItem: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)', // Translucent white background for cards
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
@@ -152,6 +162,7 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
   alertText: {
     marginTop: 5,
@@ -166,10 +177,10 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: '#007BFF',
-    fontSize: 18,
+    fontSize: 23,
   },
   detailsContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Translucent white for details
     padding: 20,
     borderRadius: 10,
     borderColor: '#ddd',
@@ -179,14 +190,24 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#333',
   },
   weatherCondition: {
     fontSize: 20,
     marginBottom: 10,
+    color: '#333',
+  },
+  heading: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'yellow',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   temperature: {
     fontSize: 18,
     marginBottom: 5,
+    color: '#333',
   },
   alertContainer: {
     marginTop: 20,
@@ -202,9 +223,11 @@ const styles = StyleSheet.create({
   alertDescription: {
     marginTop: 5,
     fontSize: 16,
+    color: '#333',
   },
   advice: {
     marginTop: 10,
     fontStyle: 'italic',
+    color: '#333',
   },
 });

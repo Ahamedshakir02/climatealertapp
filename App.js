@@ -85,7 +85,9 @@ export default function App() {
       style={styles.locationItem}
       onPress={() => {
         setSelectedLocation(item);
-        sendNotification(item.alerts);
+        if (item.alerts) {
+          sendNotification(item.alerts); // Send notification when location with alerts is selected
+        }
       }}
     >
       <Text style={styles.locationText}>{item.location}</Text>
@@ -114,7 +116,7 @@ export default function App() {
   return (
     <ImageBackground source={backgroundImg} style={styles.background}>
       <View style={styles.container}>
-      <Text style={styles.heading}>Climate Alert</Text>
+        <Text style={styles.heading}>Climate Alert</Text>
         {selectedLocation ? (
           <View style={styles.detailsView}>
             <TouchableOpacity onPress={() => setSelectedLocation(null)} style={styles.backButton}>
@@ -135,7 +137,6 @@ export default function App() {
   );
 }
 
-// Styling for the app
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -144,15 +145,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Slightly darkened background to improve text readability
-    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 20, 
     paddingTop: 50,
   },
   list: {
     paddingBottom: 20,
   },
   locationItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.6)', // Translucent white background for cards
+    backgroundColor: 'rgba(255, 255, 255, 0.6)', 
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
   },
   detailsContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Translucent white for details
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', 
     padding: 20,
     borderRadius: 10,
     borderColor: '#ddd',
